@@ -1,0 +1,5 @@
+ifneq (,$(filter pcal6524,$(USEMODULE))) 
+  USEMODULE += periph_i2c
+  USEMODULE += ztimer ztimer_msec
+endif
+

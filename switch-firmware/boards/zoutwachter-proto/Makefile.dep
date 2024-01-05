@@ -1,0 +1,2 @@
+# dependencies
+include $(RIOTBASE)/cpu/stm32/Makefile.dep

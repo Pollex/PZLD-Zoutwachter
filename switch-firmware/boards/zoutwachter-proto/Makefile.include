@@ -1,0 +1,9 @@
+INCLUDES += -I$(RIOTBOARD)/common/stm32/include
+
+PROGRAMMERS_SUPPORTED += openocd
+OPENOCD_DEBUG_ADAPTER = dap
+OPENOCD_CONFIG = /usr/share/openocd/scripts/target/stm32l0.cfg
+
+PORT_LINUX ?= /dev/ttyUSB0
+
+PROGRAMMER ?= openocd
