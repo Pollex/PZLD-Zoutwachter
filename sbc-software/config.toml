@@ -1,0 +1,3 @@
+PushURL = "https://acc.sensorbucket.nl/api/uplinks/123123"
+Authorization = "Bearer 123123"
+Interval = "15s"

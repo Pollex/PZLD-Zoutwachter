@@ -2,7 +2,6 @@ package cn0359
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"io"
 	"regexp"
@@ -10,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"go.bug.st/serial"
+	"github.com/tarm/serial"
 )
 
 /*
@@ -59,32 +58,24 @@ type Result struct {
 }
 
 type CN0359 struct {
-	conn   io.ReadWriteCloser
-	reader *bufio.Reader
-	addr   uint
+	conn io.ReadWriteCloser
+	addr uint
 }
 
 func NewFromStream(conn io.ReadWriteCloser, addr uint) *CN0359 {
 	return &CN0359{
-		conn:   conn,
-		reader: bufio.NewReader(conn),
-		addr:   addr,
+		conn: conn,
+		addr: addr,
 	}
 }
 
 func New(portStr string, baud int, addr uint) (*CN0359, error) {
-	port, err := serial.Open(portStr, &serial.Mode{
-		BaudRate: baud,
-	})
+	c := &serial.Config{Name: portStr, Baud: baud, ReadTimeout: 1 * time.Second}
+	port, err := serial.OpenPort(c)
 	if err != nil {
-		return nil, fmt.Errorf("could not open port: %w", err)
+		return nil, fmt.Errorf("opening serial port: %w", err)
 	}
-	port.SetReadTimeout(1 * time.Second)
-	return &CN0359{
-		conn:   port,
-		reader: bufio.NewReader(port),
-		addr:   addr,
-	}, nil
+	return NewFromStream(port, addr), nil
 }
 
 func (c *CN0359) SetAddr(addr uint) {
@@ -94,20 +85,18 @@ func (c *CN0359) SetAddr(addr uint) {
 var r_float = regexp.MustCompile(`-?\d+(\.\d+)?(e[-+]?[\d]+)?`)
 
 func (c *CN0359) Poll() (Result, error) {
-	tmp := make([]byte, c.reader.Buffered())
-	c.reader.Read(tmp)
-
 	var result Result
+
+	scanner := bufio.NewScanner(c.conn)
+
 	_, err := fmt.Fprintf(c.conn, "%d poll\n", c.addr)
 	if err != nil {
 		return result, fmt.Errorf("could not write to connection: %w", err)
 	}
 
-	for cnt := 22; cnt > 0; cnt-- {
-		line, err := c.reader.ReadString('\n')
-		if errors.Is(err, io.EOF) {
-			break
-		}
+	count := 0
+	for scanner.Scan() {
+		line := scanner.Text()
 		splits := strings.Split(line, ":")
 		if len(splits) != 2 {
 			continue
@@ -122,6 +111,13 @@ func (c *CN0359) Poll() (Result, error) {
 		if err != nil {
 			return result, fmt.Errorf("could not read line from connection: %w", err)
 		}
+		count++
+	}
+	if err := scanner.Err(); err != nil {
+		return result, fmt.Errorf("reading from stream: %w", err)
+	}
+	if count != 20 {
+		return result, fmt.Errorf("partial response: %d lines out of expected 22", count)
 	}
 
 	return result, nil
