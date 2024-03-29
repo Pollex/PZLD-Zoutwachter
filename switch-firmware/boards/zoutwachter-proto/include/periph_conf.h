@@ -1,10 +1,17 @@
 #ifndef PERIPH_CONF_H
 #define PERIPH_CONF_H
 
+#define CONFIG_BOARD_HAS_HSE 1
+#define CONFIG_USE_CLOCK_HSE 1
+#define CONFIG_CLOCK_HSE MHZ(8)
+
+
 #include "cfg_rtt_default.h"
 #include "cfg_timer_tim2.h"
 #include "clk_conf.h"
 #include "periph_cpu.h"
+
+
 
 #ifdef __cplusplus
 extern "C" {

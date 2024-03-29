@@ -14,7 +14,7 @@ EXTERNAL_BOARD_DIRS = $(CURDIR)/boards
 BOARD ?= zoutwachter-proto
 
 # This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= $(CURDIR)/../../../RIOT
+RIOTBASE ?= $(CURDIR)/../../RIOT
 
 QUIET ?= 1
 

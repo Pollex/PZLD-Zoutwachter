@@ -8,7 +8,7 @@
 #endif
 
 #ifndef PCAL6524_PARAM_ADDR
-#define PCAL6524_PARAM_ADDR 0x23
+#define PCAL6524_PARAM_ADDR 0x20
 #endif
 
 #ifndef PCAL6524_PARAMS

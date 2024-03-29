@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.go": "go",
+        "board.h": "c",
+        "pcal6524.h": "c",
+        "gpio.h": "c",
+        "cpu.h": "c",
+        "init.h": "c",
+        "periph_cpu.h": "c"
+    }
+}
