@@ -1,0 +1,3 @@
+ifneq (,$(filter ws281b,$(USEMODULE))) 
+  #USEMODULE += periph_i2c
+endif

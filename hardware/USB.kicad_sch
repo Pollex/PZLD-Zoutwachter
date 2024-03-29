@@ -1412,7 +1412,7 @@
     (property "Value" "4u7" (at 219.075 39.37 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:C_1210_3225Metric" (at 217.17 37.465 0)
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 217.17 37.465 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 217.17 37.465 0)
@@ -1646,7 +1646,7 @@
   (symbol (lib_id "Interface_USB:CP2102N-Axx-xQFN28") (at 235.585 74.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 67e4a45d-daa3-4a44-bffe-f59c567a6059)
-    (property "Reference" "U?" (at 237.7791 107.1301 0)
+    (property "Reference" "U36" (at 237.7791 107.1301 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "CP2102N-Axx-xQFN28" (at 237.7791 109.5543 0)
@@ -1698,9 +1698,6 @@
     (pin "9" (uuid 0c35d34a-e243-4bac-bbc9-08ed3cbf03c0))
     (instances
       (project "Zoutwachter-switch"
-        (path "/51927748-cbf3-4f36-990c-40014f3393ae"
-          (reference "U?") (unit 1)
-        )
         (path "/51927748-cbf3-4f36-990c-40014f3393ae/05dad072-cd43-486c-b27f-b8e24eeef930"
           (reference "U36") (unit 1)
         )
@@ -1742,7 +1739,7 @@
     (property "Value" "4u7" (at 254 38.735 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:C_1210_3225Metric" (at 252.095 36.83 0)
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 252.095 36.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 252.095 36.83 0)

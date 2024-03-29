@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.762,
-          "height": 1.524,
-          "width": 1.524
+          "drill": 0.0,
+          "height": 0.95,
+          "width": 0.9
         },
         "silk_line_width": 0.153,
         "silk_text_italic": false,
@@ -197,7 +197,14 @@
           "drill": 0.3
         }
       ],
-      "zones_allow_external_fillets": false
+      "zones_allow_external_fillets": true
+    },
+    "ipc2581": {
+      "dist": "",
+      "distpn": "",
+      "internal_id": "",
+      "mfg": "",
+      "mpn": ""
     },
     "layer_presets": [],
     "viewports": []
@@ -558,6 +565,30 @@
       {
         "netclass": "Default",
         "pattern": "I2C_SDA"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/Power/Vcc"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/Power/Vhost"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/Valways"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/Vsensor"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/LED/LED_IN_5V"
+      },
+      {
+        "netclass": "POWER",
+        "pattern": "/LED/LED_OUT_5V"
       }
     ]
   },
@@ -566,14 +597,75 @@
       "gencad": "",
       "idf": "",
       "netlist": "Zoutwachter-switch.net",
+      "plot": "",
+      "pos_files": "",
       "specctra_dsn": "",
       "step": "",
+      "svg": "",
       "vrml": ""
     },
     "page_layout_descr_file": ""
   },
   "schematic": {
     "annotate_start_num": 0,
+    "bom_fmt_presets": [],
+    "bom_fmt_settings": {
+      "field_delimiter": ",",
+      "keep_line_breaks": false,
+      "keep_tabs": false,
+      "name": "CSV",
+      "ref_delimiter": ",",
+      "ref_range_delimiter": "",
+      "string_delimiter": "\""
+    },
+    "bom_presets": [],
+    "bom_settings": {
+      "exclude_dnp": false,
+      "fields_ordered": [
+        {
+          "group_by": false,
+          "label": "Reference",
+          "name": "Reference",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "Value",
+          "name": "Value",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Datasheet",
+          "name": "Datasheet",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Footprint",
+          "name": "Footprint",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Qty",
+          "name": "${QUANTITY}",
+          "show": true
+        },
+        {
+          "group_by": true,
+          "label": "DNP",
+          "name": "${DNP}",
+          "show": true
+        }
+      ],
+      "filter_string": "",
+      "group_symbols": true,
+      "name": "Grouped By Value",
+      "sort_asc": true,
+      "sort_field": "Reference"
+    },
+    "connection_grid_size": 50.0,
     "drawing": {
       "dashed_lines_dash_length_ratio": 12.0,
       "dashed_lines_gap_length_ratio": 3.0,
@@ -587,6 +679,11 @@
       "intersheets_ref_suffix": "",
       "junction_size_choice": 3,
       "label_size_ratio": 0.375,
+      "operating_point_overlay_i_precision": 3,
+      "operating_point_overlay_i_range": "~A",
+      "operating_point_overlay_v_precision": 3,
+      "operating_point_overlay_v_range": "~V",
+      "overbar_offset_ratio": 1.23,
       "pin_symbol_size": 25.0,
       "text_offset_ratio": 0.15
     },
@@ -595,13 +692,14 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "",
+    "net_format_name": "KiCad",
     "page_layout_descr_file": "",
-    "plot_directory": "schematic",
+    "plot_directory": "",
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
     "spice_save_all_currents": false,
+    "spice_save_all_dissipations": false,
     "spice_save_all_voltages": false,
     "subpart_first_id": 65,
     "subpart_id_separator": 0
@@ -616,12 +714,124 @@
       "Power"
     ],
     [
+      "356f252d-d5bf-459d-b0e9-f92e5de3dc43",
+      "Switch_Module1"
+    ],
+    [
+      "85dad3a3-7174-484d-a113-073fdb01cf7f",
+      "Switch_Module2"
+    ],
+    [
+      "1fdbde8a-a1c9-433e-bdd5-1987389dfae2",
+      "Switch_Module3"
+    ],
+    [
       "c7832859-6449-4fe9-9c3a-392484483cb2",
       "Switch_Module4"
     ],
     [
       "05dad072-cd43-486c-b27f-b8e24eeef930",
       "USB"
+    ],
+    [
+      "1994b9f0-2116-4f7e-8158-3f911f70fe49",
+      "LED"
+    ],
+    [
+      "90a5b261-c1fe-4611-9b2c-94824651b99a",
+      "Switch_ADG1"
+    ],
+    [
+      "84b3e335-3a8d-4686-bf52-1f7af278b76a",
+      "Switch_ADG2"
+    ],
+    [
+      "17a6c756-637e-4bef-9986-bd22bd6436c6",
+      "Switch_ADG3"
+    ],
+    [
+      "05c8d82e-8988-417e-b9d4-5d672ae8c5ec",
+      "Switch_ADG4"
+    ],
+    [
+      "a07c7105-31a3-4570-9126-3766de0c876b",
+      "Switch_ADG5"
+    ],
+    [
+      "30c0e8bb-4cb7-4c6c-9ff9-37f726a86f08",
+      "Switch_ADG6"
+    ],
+    [
+      "90a5b261-c1fe-4611-9b2c-94824651b99a",
+      "Switch_ADG1"
+    ],
+    [
+      "84b3e335-3a8d-4686-bf52-1f7af278b76a",
+      "Switch_ADG2"
+    ],
+    [
+      "17a6c756-637e-4bef-9986-bd22bd6436c6",
+      "Switch_ADG3"
+    ],
+    [
+      "05c8d82e-8988-417e-b9d4-5d672ae8c5ec",
+      "Switch_ADG4"
+    ],
+    [
+      "a07c7105-31a3-4570-9126-3766de0c876b",
+      "Switch_ADG5"
+    ],
+    [
+      "30c0e8bb-4cb7-4c6c-9ff9-37f726a86f08",
+      "Switch_ADG6"
+    ],
+    [
+      "90a5b261-c1fe-4611-9b2c-94824651b99a",
+      "Switch_ADG1"
+    ],
+    [
+      "84b3e335-3a8d-4686-bf52-1f7af278b76a",
+      "Switch_ADG2"
+    ],
+    [
+      "17a6c756-637e-4bef-9986-bd22bd6436c6",
+      "Switch_ADG3"
+    ],
+    [
+      "05c8d82e-8988-417e-b9d4-5d672ae8c5ec",
+      "Switch_ADG4"
+    ],
+    [
+      "a07c7105-31a3-4570-9126-3766de0c876b",
+      "Switch_ADG5"
+    ],
+    [
+      "30c0e8bb-4cb7-4c6c-9ff9-37f726a86f08",
+      "Switch_ADG6"
+    ],
+    [
+      "90a5b261-c1fe-4611-9b2c-94824651b99a",
+      "Switch_ADG1"
+    ],
+    [
+      "84b3e335-3a8d-4686-bf52-1f7af278b76a",
+      "Switch_ADG2"
+    ],
+    [
+      "17a6c756-637e-4bef-9986-bd22bd6436c6",
+      "Switch_ADG3"
+    ],
+    [
+      "05c8d82e-8988-417e-b9d4-5d672ae8c5ec",
+      "Switch_ADG4"
+    ],
+    [
+      "a07c7105-31a3-4570-9126-3766de0c876b",
+      "Switch_ADG5"
+    ],
+    [
+      "30c0e8bb-4cb7-4c6c-9ff9-37f726a86f08",
+      "Switch_ADG6"
     ]
   ],
   "text_variables": {}

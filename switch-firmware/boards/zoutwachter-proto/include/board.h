@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "cpu.h"
 
 #define LED_OUT GPIO_PIN(PORT_B, 13)
 #define LED_IN GPIO_PIN(PORT_A, 0)

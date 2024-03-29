@@ -1,14 +1,46 @@
 #ifndef PERIPH_CONF_H
 #define PERIPH_CONF_H
 
+#define CONFIG_CLOCK_PLL_DIV            (2)
+#define CONFIG_CLOCK_PLL_MUL            (8)
+#define CONFIG_BOARD_HAS_HSE 1
+#define CONFIG_CLOCK_HSE MHZ(8)
+
 #include "cfg_rtt_default.h"
-#include "cfg_timer_tim2.h"
 #include "clk_conf.h"
 #include "periph_cpu.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+/**
+ * @name   Timer configuration
+ * @{
+ */
+static const timer_conf_t timer_config[] = {
+    //{
+    //    .dev      = TIM2,
+    //    .max      = 0x0000ffff,
+    //    .rcc_mask = RCC_APB1ENR_TIM2EN,
+    //    .bus      = APB1,
+    //    .irqn     = TIM2_IRQn
+    //}
+    {
+        .dev      = TIM3,
+        .max      = 0x0000ffff,
+        .rcc_mask = RCC_APB1ENR_TIM3EN,
+        .bus      = APB1,
+        .irqn     = TIM3_IRQn
+    }
+};
+
+#define TIMER_0_ISR         isr_tim3
+
+#define TIMER_NUMOF         ARRAY_SIZE(timer_config)
+/** @} */
+
 
 static const uart_conf_t uart_config[] = {{
     .dev = USART1,
