@@ -22,7 +22,7 @@ QUIET ?= 1
 EXTERNAL_MODULE_DIRS += modules
 
 USEMODULE += ztimer ztimer_msec
-USEMODULE += pcal6524 ws2812b
+USEMODULE += pcal6524 stws281x
 
 #INCLUDES += -Iapplication_include
 include $(RIOTBASE)/Makefile.include
