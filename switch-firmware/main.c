@@ -2,12 +2,9 @@
 #include "pcal6524.h"
 #include "periph/gpio.h"
 #include "periph/i2c.h"
-#include "stm32l071xx.h"
 #include "stws281x.h"
 #include "ztimer.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 pcal6524_t pcal;
 pcal6524_pins_t pins;
@@ -22,15 +19,26 @@ static const pcal6524_params_t pcal6524_params[] = {
 int main(void) {
     gpio_init(V5_EN, GPIO_OUT);
     gpio_set(V5_EN);
+    ztimer_sleep(ZTIMER_MSEC, 1);
     stws281x_init();
     int ix = 0;
+    int last = 23;
     for (;;) {
         stws281x_set(ix, 0, 50, 0);
         stws281x_write();
-        ztimer_sleep(ZTIMER_MSEC, 200);
-        stws281x_clear(ix);
+        ztimer_sleep(ZTIMER_MSEC, 10);
+        if (last == 0)
+            break;
+        if (ix != last) {
+            stws281x_clear(ix);
+        } else {
+            last--;
+            ix = -1;
+        }
         ix = (ix + 1) % 24;
     }
+
+    for(;;);
 
     puts("Zoutwachter Switch getting ready...");
     i2c_init(I2C_DEV(1));
