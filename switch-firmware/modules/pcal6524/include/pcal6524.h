@@ -8,15 +8,6 @@
 extern "C" {
 #endif
 
-typedef struct {
-    i2c_t i2c;
-    uint8_t addr;
-} pcal6524_params_t;
-
-typedef struct {
-    pcal6524_params_t params;
-} pcal6524_t;
-
 typedef union pcal6524_pins_t {
     union {
         uint8_t bytes[3];
@@ -50,10 +41,20 @@ typedef union pcal6524_pins_t {
     };
 } pcal6524_pins_t;
 
+typedef struct {
+    i2c_t i2c;
+    uint8_t addr;
+} pcal6524_params_t;
+
+typedef struct {
+    pcal6524_params_t params;
+    pcal6524_pins_t pins;
+} pcal6524_t;
+
 int pcal6524_init(pcal6524_t *p, const pcal6524_params_t *params);
-int pcal6524_set(pcal6524_t *p, pcal6524_pins_t pins);
-int pcal6524_clear(pcal6524_t *p, pcal6524_pins_t pins);
-int pcal6524_write(pcal6524_t *p, pcal6524_pins_t pins);
+int pcal6524_set(pcal6524_t *p, uint8_t pin);
+int pcal6524_clear(pcal6524_t *p, uint8_t pin);
+int pcal6524_write(pcal6524_t *p);
 
 #ifdef __cplusplus
 }

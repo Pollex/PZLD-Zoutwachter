@@ -14,6 +14,7 @@
 
 #define ADDR p->params.addr
 #define DEV p->params.i2c
+#define PIN(x) ((1 << 23) >> x)
 
 typedef struct device_id_t {
     uint16_t manufacturer : 12;
@@ -37,7 +38,7 @@ int read_output_pins(pcal6524_t *p, pcal6524_pins_t *pins) {
     int err = 0;
 
     i2c_acquire(DEV);
-    err += i2c_read_regs(ADDR, ADDR, REG_OUTPUT_0 | REG_AI, &pins->bytes, 3, 0);
+    err += i2c_read_regs(DEV, ADDR, REG_OUTPUT_0 | REG_AI, &pins->bytes, 3, 0);
     i2c_release(DEV);
 
     return err;
@@ -60,10 +61,14 @@ int pcal6524_init(pcal6524_t *p, const pcal6524_params_t *params) {
         return -ENODEV;
     }
 
-    // Set all pins as outputs
+    // Set all pins as low outputs
     uint8_t tmp[3] = {0};
     i2c_acquire(DEV);
-    if ((err = i2c_write_regs(DEV, ADDR, REG_CONFIG_0, tmp, 3, 0)) < 0) {
+    if ((err = i2c_write_regs(DEV, ADDR, REG_OUTPUT_0 | REG_AI, tmp, 3, 0)) < 0) {
+        i2c_release(DEV);
+        return err;
+    }
+    if ((err = i2c_write_regs(DEV, ADDR, REG_CONFIG_0 | REG_AI, tmp, 3, 0)) < 0) {
         i2c_release(DEV);
         return err;
     }
@@ -72,43 +77,31 @@ int pcal6524_init(pcal6524_t *p, const pcal6524_params_t *params) {
     return 0;
 }
 
-int pcal6524_set(pcal6524_t *p, pcal6524_pins_t pins) {
-    int err = 0;
-    pcal6524_pins_t current = {0};
-    if ((err = read_output_pins(p, &current)) < 0) {
-        D("could not read output reg for %x, error: %d\n", ADDR, err);
-        return err;
-    }
-    current.raw |= pins.raw;
-    if ((err = pcal6524_write(p, current)) < 0) {
-        return err;
-    }
+int pcal6524_set(pcal6524_t *p, uint8_t pin) {
+    if (pin >= 24) return -1;
+    p->pins.raw |= PIN(pin);
+    D("[%X] Set pin %d\n", ADDR, pin);
     return 0;
 }
 
-int pcal6524_clear(pcal6524_t *p, pcal6524_pins_t pins) {
-    int err = 0;
-    pcal6524_pins_t current = {0};
-    if ((err = read_output_pins(p, &current)) < 0) {
-        D("could not write output reg for %x, error: %x\n", ADDR, err);
-        return err;
-    }
-    current.raw &= ~(pins.raw);
-    if ((err = pcal6524_write(p, current)) < 0) {
-        return err;
-    }
+int pcal6524_clear(pcal6524_t *p, uint8_t pin) {
+    if (pin >= 24) return -1;
+    p->pins.raw &= ~PIN(pin);
+    D("[%X] Unset pin %d\n", ADDR, pin);
     return 0;
 }
 
-int pcal6524_write(pcal6524_t *p, pcal6524_pins_t pins) {
+int pcal6524_write(pcal6524_t *p) {
     i2c_acquire(DEV);
     int err =
-        i2c_write_regs(DEV, ADDR, REG_OUTPUT_0 | REG_AI, pins.bytes, 3, 0);
+        i2c_write_regs(DEV, ADDR, REG_OUTPUT_0 | REG_AI, p->pins.bytes, 3, 0);
     if (err < 0) {
         D("could not write output reg for %x, error: %x\n", ADDR, err);
-        return err;
         i2c_release(DEV);
+        return err;
     }
+    D("[%X] Write\n", ADDR);
     i2c_release(DEV);
     return err;
 }
+

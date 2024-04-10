@@ -23,6 +23,7 @@ EXTERNAL_MODULE_DIRS += modules
 
 USEMODULE += ztimer ztimer_msec
 USEMODULE += pcal6524 stws281x
+USEMODULE += shell
 
 #INCLUDES += -Iapplication_include
 include $(RIOTBASE)/Makefile.include

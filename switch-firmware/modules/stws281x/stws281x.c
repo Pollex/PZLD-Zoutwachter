@@ -76,6 +76,11 @@ void stws281x_init(void) {
         led_buffer[ix] = LED_L_CCR;
 }
 
+void stws281x_clearall(void) {
+    for (int ix = 0; ix < LED_BUFFER_SIZE; ix++)
+        led_buffer[ix] = LED_L_CCR;
+}
+
 void stws281x_set(uint8_t n, uint8_t R, uint8_t G, uint8_t B) {
     uint8_t *ptr = &led_buffer[n * 24];
     for (int ix = 0; ix < 8; ix++) {
