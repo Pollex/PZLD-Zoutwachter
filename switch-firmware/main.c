@@ -35,12 +35,12 @@ static const pcal6524_params_t pcal6524_params[] = {
 #define _pin(x) ((x) & 0b11111)
 uint8_t pcal_lookup[24] = {
     // <PCAL index>       <Pin M0 index>
-    ((0 & 0b111) << 5) | (8 & 0b11111),  //
-    ((0 & 0b111) << 5) | (4 & 0b11111),  //
-    ((0 & 0b111) << 5) | (0 & 0b11111),  //
-    ((0 & 0b111) << 5) | (20 & 0b11111), //
-    ((0 & 0b111) << 5) | (16 & 0b11111), //
     ((0 & 0b111) << 5) | (12 & 0b11111), //
+    ((0 & 0b111) << 5) | (16 & 0b11111), //
+    ((0 & 0b111) << 5) | (20 & 0b11111), //
+    ((0 & 0b111) << 5) | (0 & 0b11111),  //
+    ((0 & 0b111) << 5) | (4 & 0b11111),  //
+    ((0 & 0b111) << 5) | (8 & 0b11111),  //
 
     ((1 & 0b111) << 5) | (12 & 0b11111), //
     ((1 & 0b111) << 5) | (16 & 0b11111), //
@@ -96,27 +96,16 @@ void connect(uint8_t m, uint8_t f) {
     stws281x_write();
 }
 
-void set_electrodes(uint8_t e[4]) {
-    printf("Setting electrodes [%2d, %2d, %2d, %2d]\n", e[0], e[1], e[2], e[3]);
-    connect(0, e[0]);
-    connect(1, e[1]);
-    connect(2, e[2]);
-    connect(3, e[3]);
-}
-
 static int _cmd_configure(int argc, char **argv) {
     (void)argv;
     if (argc <= 4) {
         puts("usage: configure <E1> <E2> <E3> <E4>");
         return 1;
     }
-    uint8_t e[4] = {
-        atoi(argv[1])-1,
-        atoi(argv[2])-1,
-        atoi(argv[3])-1,
-        atoi(argv[4])-1,
-    };
-    set_electrodes(e);
+    connect(0, atoi(argv[1])-1);
+    connect(1, atoi(argv[2])-1);
+    connect(2, atoi(argv[3])-1);
+    connect(3, atoi(argv[4])-1);
     return 0;
 }
 
@@ -142,14 +131,6 @@ int main(void) {
         }
     }
     puts("OK\n");
-
-
-    int ix = 0;
-    for (;;) {
-        connect(0, ix);
-        ix = (ix+1)%6;
-        ztimer_sleep(ZTIMER_MSEC, 300);
-    }
 
     char line_buf[SHELL_DEFAULT_BUFSIZE];
     shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);
