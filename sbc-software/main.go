@@ -29,13 +29,15 @@ func main() {
 }
 
 type Config struct {
-	ReadoutPath   string
-	PushURL       string
-	Authorization string
-	Interval      time.Duration
-	SwitchPath    string
-	Profile       [][4]uint8
-	CSVFolder     string
+	ReadoutPath    string
+	ReadoutBaud    int
+	ReadoutAddress uint
+	PushURL        string
+	Authorization  string
+	Interval       time.Duration
+	SwitchPath     string
+	Profile        [][4]uint8
+	CSVFolder      string
 }
 
 var k = koanf.New(".")
@@ -86,7 +88,7 @@ func Run() error {
         %s`+"\n", config.PushURL, config.Interval.String())
 
 	fmt.Print("Connecting to CN0359...")
-	cn, err := cn0359.New(config.ReadoutPath, 19200, 44)
+	cn, err := cn0359.New(config.ReadoutPath, config.ReadoutBaud, config.ReadoutAddress)
 	if err != nil {
 		return fmt.Errorf("creating cn0359 driver failed: %w", err)
 	}
