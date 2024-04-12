@@ -37,24 +37,25 @@ import (
 */
 
 type Result struct {
-	ExcitationVoltage      float64
-	ExcitationFrequency    float64
-	ExcitationSetupTime    float64
-	ExcitationHoldtime     float64
-	TemperatureCoefficient float64
-	KConstant              float64
-	ADC0Hits               float64
-	PositiveCurrentGain    float64
-	PositiveCurrentPeak    float64
-	NegativeCurrentGain    float64
-	NegativeCurrentPeak    float64
-	PositiveVoltageGain    float64
-	PositiveVoltagePeak    float64
-	NegativeVoltageGain    float64
-	NegativeVoltagePeak    float64
-	ADC1Hits               float64
-	Temperature            float64
-	Conductivity           float64
+	Timestamp              time.Time `json:"timestamp"`
+	ExcitationVoltage      float64   `json:"excitation_voltage"`
+	ExcitationFrequency    float64   `json:"excitation_frequency"`
+	ExcitationSetupTime    float64   `json:"excitation_setup_time"`
+	ExcitationHoldtime     float64   `json:"excitation_holdtime"`
+	TemperatureCoefficient float64   `json:"temperature_coefficient"`
+	KConstant              float64   `json:"k_constant"`
+	ADC0Hits               float64   `json:"adc_0_hits"`
+	PositiveCurrentGain    float64   `json:"positive_current_gain"`
+	PositiveCurrentPeak    float64   `json:"positive_current_peak"`
+	NegativeCurrentGain    float64   `json:"negative_current_gain"`
+	NegativeCurrentPeak    float64   `json:"negative_current_peak"`
+	PositiveVoltageGain    float64   `json:"positive_voltage_gain"`
+	PositiveVoltagePeak    float64   `json:"positive_voltage_peak"`
+	NegativeVoltageGain    float64   `json:"negative_voltage_gain"`
+	NegativeVoltagePeak    float64   `json:"negative_voltage_peak"`
+	ADC1Hits               float64   `json:"adc_1_hits"`
+	Temperature            float64   `json:"temperature"`
+	Conductivity           float64   `json:"conductivity"`
 }
 
 type CN0359 struct {
@@ -120,6 +121,7 @@ func (c *CN0359) Poll() (Result, error) {
 		return result, fmt.Errorf("partial response: %d lines out of expected 22", count)
 	}
 
+	result.Timestamp = time.Now()
 	return result, nil
 }
 

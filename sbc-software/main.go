@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,6 +19,7 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/v2"
 	"github.com/pollex/pzld-zoutwachter/internal/cn0359"
+	"github.com/pollex/pzld-zoutwachter/internal/eswitch"
 )
 
 func main() {
@@ -26,9 +29,13 @@ func main() {
 }
 
 type Config struct {
+	ReadoutPath   string
 	PushURL       string
 	Authorization string
 	Interval      time.Duration
+	SwitchPath    string
+	Profile       [][4]uint8
+	CSVFolder     string
 }
 
 var k = koanf.New(".")
@@ -56,6 +63,10 @@ func loadConfig() (Config, error) {
 		return config, fmt.Errorf("config file invalid: %w", err)
 	}
 
+	if config.CSVFolder == "" {
+		config.CSVFolder = "."
+	}
+
 	return config, nil
 }
 
@@ -75,22 +86,59 @@ func Run() error {
         %s`+"\n", config.PushURL, config.Interval.String())
 
 	fmt.Print("Connecting to CN0359...")
-	cn, err := cn0359.New("/dev/ttyUSB0", 19200, 44)
+	cn, err := cn0359.New(config.ReadoutPath, 19200, 44)
 	if err != nil {
 		return fmt.Errorf("creating cn0359 driver failed: %w", err)
+	}
+	fmt.Println("success")
+
+	fmt.Print("Connecting to Switch...")
+	elektrodes, err := eswitch.New(config.SwitchPath, 115200)
+	if err != nil {
+		return fmt.Errorf("creating switch driver failed: %w", err)
 	}
 	fmt.Println("success")
 
 	fmt.Println("Performing first measurement in 2 seconds...")
 	<-time.After(2 * time.Second)
 
+	profileIndex := 0
+	profileLength := len(config.Profile)
+
 	// Initial measurement
 	measure := func(tim time.Time) {
-		fmt.Println("\nStarting new measurement...")
-		if err := doMeasurement(config, cn); err != nil {
-			fmt.Printf("Failed to perform measurement: %s\n", err.Error())
+		profile := config.Profile[profileIndex]
+		fmt.Println("\nSwitching elektrodes...")
+		if err := elektrodes.Set(profile); err != nil {
+			fmt.Printf("Failed to switch elektrodes: %s\n", err.Error())
+			return
 		}
+
+		// Get measuremnet
+		fmt.Println("\nStarting new measurement...")
+		fmt.Print("Polling...")
+		measurement, err := cn.Poll()
+		if err != nil {
+			fmt.Println("failed")
+			fmt.Printf("polling cn0359 error: %s\n", err)
+			return
+		}
+		fmt.Println("Success")
+		fmt.Printf("Result:\n %+v\n", measurement)
+
+		// Save to CSV
+		if err := saveToCSV(config, measurement, profile); err != nil {
+			fmt.Printf("could not write to CSV: %s", err)
+		}
+
+		// Send to SB
+		if err := sendToSensorBucket(config, measurement, profile); err != nil {
+			fmt.Printf("could not send to SensorBucket: %s", err)
+		}
+
+		// End
 		fmt.Printf("Next measurement at: %s\n", tim.Add(config.Interval).Local().String())
+		profileIndex = (profileIndex + 1) % profileLength
 	}
 	measure(time.Now())
 
@@ -108,19 +156,104 @@ outer_loop:
 	return nil
 }
 
-func doMeasurement(cfg Config, cn *cn0359.CN0359) error {
-	fmt.Print("Polling...")
-	measurement, err := cn.Poll()
-	if err != nil {
-		fmt.Println("failed")
-		return fmt.Errorf("polling cn0359 error: %w", err)
+func saveToCSV(cfg Config, result cn0359.Result, profile [4]uint8) error {
+	fmt.Print("Writing to file...")
+	now := time.Now()
+	year, week := now.ISOWeek()
+	filename := fmt.Sprintf("%s/%4d%2d.csv", cfg.CSVFolder, year, week)
+	createHeader := false
+	if stat, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
+		createHeader = true
+	} else if err != nil {
+		return fmt.Errorf("could not stat csv file: %w", err)
+	} else if stat.IsDir() {
+		return fmt.Errorf("CSV file is a directory")
 	}
-	fmt.Println("Success")
-	fmt.Printf("Result:\n %+v\n", measurement)
 
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	if err != nil {
+		return fmt.Errorf("could not open/create csv file: %w", err)
+	}
+	c := csv.NewWriter(file)
+	defer file.Close()
+	if createHeader {
+		fmt.Println("Creating header for new CSV")
+		err := c.Write([]string{
+			"Timestamp",
+			"Elektrode Pair",
+			"Elektrode 1",
+			"Elektrode 2",
+			"Elektrode 3",
+			"Elektrode 4",
+			"ExcitationVoltage",
+			"ExcitationFrequency",
+			"ExcitationSetupTime",
+			"ExcitationHoldtime",
+			"TemperatureCoefficient",
+			"KConstant",
+			"ADC0Hits",
+			"PositiveCurrentGain",
+			"PositiveCurrentPeak",
+			"NegativeCurrentGain",
+			"NegativeCurrentPeak",
+			"PositiveVoltageGain",
+			"PositiveVoltagePeak",
+			"NegativeVoltageGain",
+			"NegativeVoltagePeak",
+			"ADC1Hits",
+			"Temperature",
+			"Conductivity",
+		})
+		if err != nil {
+			return fmt.Errorf("could not write CSV file: %w", err)
+		}
+	}
+	fmt.Println("Writing line to CSV")
+	err = c.Write([]string{
+		result.Timestamp.Format(time.RFC3339),
+		fmt.Sprintf("%d|%d|%d|%d", profile[0], profile[1], profile[2], profile[3]),
+		fmt.Sprint(profile[0]), fmt.Sprint(profile[1]), fmt.Sprint(profile[2]), fmt.Sprint(profile[3]),
+		fmt.Sprint(result.ExcitationVoltage),
+		fmt.Sprint(result.ExcitationFrequency),
+		fmt.Sprint(result.ExcitationSetupTime),
+		fmt.Sprint(result.ExcitationHoldtime),
+		fmt.Sprint(result.TemperatureCoefficient),
+		fmt.Sprint(result.KConstant),
+		fmt.Sprint(result.ADC0Hits),
+		fmt.Sprint(result.PositiveCurrentGain),
+		fmt.Sprint(result.PositiveCurrentPeak),
+		fmt.Sprint(result.NegativeCurrentGain),
+		fmt.Sprint(result.NegativeCurrentPeak),
+		fmt.Sprint(result.PositiveVoltageGain),
+		fmt.Sprint(result.PositiveVoltagePeak),
+		fmt.Sprint(result.NegativeVoltageGain),
+		fmt.Sprint(result.NegativeVoltagePeak),
+		fmt.Sprint(result.ADC1Hits),
+		fmt.Sprint(result.Temperature),
+		fmt.Sprint(result.Conductivity),
+	})
+	if err != nil {
+		return fmt.Errorf("could not write CSV file: %w", err)
+	}
+	c.Flush()
+
+	fmt.Println("Success")
+	return nil
+}
+
+type SensorbucketPacket struct {
+	cn0359.Result
+	Profile [4]uint8 `json:"profile"`
+}
+
+func sendToSensorBucket(cfg Config, result cn0359.Result, profile [4]uint8) error {
+	pkt := SensorbucketPacket{
+		Result:  result,
+		Profile: profile,
+	}
 	fmt.Print("Pushing data...")
 	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(measurement); err != nil {
+	if err := json.NewEncoder(&buf).Encode(pkt); err != nil {
 		fmt.Println("failed!")
 		return fmt.Errorf("error encoding measurement result to json: %w", err)
 	}
