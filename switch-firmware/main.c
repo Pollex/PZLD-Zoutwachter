@@ -73,26 +73,30 @@ uint8_t fm_color[4][3] = {
 
 uint8_t m_to_f[4] = {0xff, 0xff, 0xff, 0xff};
 
-void connect(uint8_t m, uint8_t f) {
-    pcal6524_t *pcal = _pcal(pcal_lookup[f]);
-    uint8_t pcal_pin = _pin(pcal_lookup[f]) + m;
-
-    // Remove old connection
-    uint8_t old_f = m_to_f[m];
-    if (old_f != 0xff) {
-        pcal6524_clear(pcal, _pin(pcal_lookup[old_f]) + m);
-        stws281x_clear(old_f);
+void connect(uint8_t field_pins[4]) {
+    // Remove current connections
+    for (int i = 0; i < 4; i++) {
+        pcals[i].pins.raw = 0;
+        pcal6524_write(&pcals[i]);
     }
-    printf("CONNECT M%d to F%d (was F%d)\n", m, f, old_f);
+    // Remove LEDS
+    stws281x_clearall();
 
     // Set new connection
-    pcal6524_set(pcal, pcal_pin);
-    m_to_f[m] = f;
-    uint8_t *c = fm_color[m];
-    stws281x_set(f, c[0], c[1], c[2]);
+    for (int m = 0; m < 4; m++) {
+        uint8_t f = field_pins[m];
+        pcal6524_t *pcal = _pcal(pcal_lookup[f]);
+        uint8_t pcal_pin = _pin(pcal_lookup[f]) + m;
+        pcal6524_set(pcal, pcal_pin);
+        m_to_f[m] = f;
+        uint8_t *c = fm_color[m];
+        stws281x_set(f, c[0], c[1], c[2]);
+    }
 
-    // Commit 
-    pcal6524_write(pcal);
+    // Write updates
+    for (int i = 0; i < 4; i++) {
+        pcal6524_write(&pcals[i]);
+    }
     stws281x_write();
 }
 
@@ -102,10 +106,13 @@ static int _cmd_configure(int argc, char **argv) {
         puts("usage: configure <E1> <E2> <E3> <E4>");
         return 1;
     }
-    connect(0, atoi(argv[1])-1);
-    connect(1, atoi(argv[2])-1);
-    connect(2, atoi(argv[3])-1);
-    connect(3, atoi(argv[4])-1);
+    static uint8_t field_pins[4];
+    field_pins[0] = atoi(argv[1]) - 1;
+    field_pins[1] = atoi(argv[2]) - 1;
+    field_pins[2] = atoi(argv[3]) - 1;
+    field_pins[3] = atoi(argv[4]) - 1;
+    connect(field_pins);
+
     return 0;
 }
 
