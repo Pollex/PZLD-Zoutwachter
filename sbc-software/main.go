@@ -115,6 +115,7 @@ func Run() error {
 			fmt.Printf("Failed to switch elektrodes: %s\n", err.Error())
 			return
 		}
+		time.Sleep(10 * time.Second)
 
 		// Get measuremnet
 		fmt.Println("\nStarting new measurement...")
