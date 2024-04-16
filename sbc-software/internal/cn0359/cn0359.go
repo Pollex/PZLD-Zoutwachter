@@ -70,8 +70,8 @@ func NewFromStream(conn io.ReadWriteCloser, addr uint) *CN0359 {
 	}
 }
 
-func New(portStr string, baud int, addr uint) (*CN0359, error) {
-	c := &serial.Config{Name: portStr, Baud: baud, ReadTimeout: 1 * time.Second}
+func New(portStr string, baud, addr uint) (*CN0359, error) {
+	c := &serial.Config{Name: portStr, Baud: int(baud), ReadTimeout: 1 * time.Second}
 	port, err := serial.OpenPort(c)
 	if err != nil {
 		return nil, fmt.Errorf("opening serial port: %w", err)
@@ -87,6 +87,12 @@ var r_float = regexp.MustCompile(`-?\d+(\.\d+)?(e[-+]?[\d]+)?`)
 
 func (c *CN0359) Poll() (Result, error) {
 	var result Result
+
+	tmp := make([]byte, 1024)
+	n := 0
+	for n > 0 {
+		n, _ = c.conn.Read(tmp)
+	}
 
 	scanner := bufio.NewScanner(c.conn)
 

@@ -1,16 +1,27 @@
-PushURL = "https://acc.sensorbucket.nl/api/uplinks/123123"
-Authorization = "Bearer 123123"
-Interval = "15s"
-ReadoutPath = ""
-ReadoutAddress = 44
-ReadoutBaud = 19200
-SwitchPath = ""
-CSVFolder = "./data"
-Profile = [
-    [1,2,3,4],
-    [2,3,4,5],
-    [3,4,5,6],
-    [4,5,6,7],
-    [5,6,7,8],
-    [6,7,8,9],
-]
+[Readout]
+    Path = "/dev/zw_readout"
+    Address = 44
+    BaudRate = 19200
+
+[Switch]
+    Path = "/dev/zw_switch"
+    BaudRate = 115200
+
+[SensorBucket]
+    URL = "https://acc.sensorbucket.nl/api/uplinks/<pipeline_id>"
+    APIKey = "123123"
+
+[FileLogger]
+    Directory = "./data"
+
+[Profile]
+    CycleInterval = "15m"
+    SettleTime = "5s"
+    Configuration =[
+        [1,2,3,4],
+        [2,3,4,5],
+        [3,4,5,6],
+        [4,5,6,7],
+        [5,6,7,8],
+        [6,7,8,9],
+    ]

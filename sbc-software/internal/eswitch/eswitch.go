@@ -18,8 +18,8 @@ func NewFromStream(conn io.ReadWriteCloser) *Eswitch {
 	}
 }
 
-func New(portStr string, baud int) (*Eswitch, error) {
-	c := &serial.Config{Name: portStr, Baud: baud, ReadTimeout: 1 * time.Second}
+func New(portStr string, baud uint) (*Eswitch, error) {
+	c := &serial.Config{Name: portStr, Baud: int(baud), ReadTimeout: 1 * time.Second}
 	port, err := serial.OpenPort(c)
 	if err != nil {
 		return nil, fmt.Errorf("opening serial port: %w", err)
