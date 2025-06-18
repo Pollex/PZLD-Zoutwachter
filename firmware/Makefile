@@ -26,4 +26,9 @@ USEMODULE += pcal6524 stws281x
 USEMODULE += shell
 
 #INCLUDES += -Iapplication_include
+
+ifeq ($(FAT_TEST),1)
+CFLAGS += -DAPP_DO_FAT=1
+endif
+
 include $(RIOTBASE)/Makefile.include

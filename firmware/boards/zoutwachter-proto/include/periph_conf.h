@@ -1,11 +1,13 @@
 #ifndef PERIPH_CONF_H
 #define PERIPH_CONF_H
 
+#include "stm32l071xx.h"
 #define CONFIG_CLOCK_PLL_DIV            (2)
 #define CONFIG_CLOCK_PLL_MUL            (8)
 #define CONFIG_BOARD_HAS_HSE 1
 #define CONFIG_CLOCK_HSE MHZ(8)
 
+#include "board.h"
 #include "cfg_rtt_default.h"
 #include "clk_conf.h"
 #include "periph_cpu.h"
@@ -65,7 +67,7 @@ static const uart_conf_t uart_config[] = {
     .rx_af = GPIO_AF6,
     .tx_af = GPIO_AF6,
     .bus = APB1,
-    .irqn = USART4_IRQn,
+    .irqn = USART4_5_IRQn,
     .type = STM32_USART,
     .clk_src = 0, /* Use APB clock */
   }
