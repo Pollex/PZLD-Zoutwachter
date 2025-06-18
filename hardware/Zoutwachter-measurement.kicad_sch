@@ -1,0 +1,678 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "51927748-cbf3-4f36-990c-40014f3393ae")
+	(paper "A4")
+	(title_block
+		(title "Zoutwachter Measurement-Switch")
+		(date "2025-06-01")
+		(rev "0.3")
+		(company "Avalution Engineering / Pollex")
+	)
+	(lib_symbols)
+	(bus_alias "I2C_PCAL"
+		(members "I2C_PCAL_SCL" "I2C_PCAL_SDA" "I2C_PCAL_SMBA")
+	)
+	(bus_alias "I2C_SYS"
+		(members "I2C_SYS_SCL" "I2C_SYS_SDA" "I2C_SYS_SMBA")
+	)
+	(bus_alias "SWD"
+		(members "SWCLK" "SWDIO" "RESET" "SWO")
+	)
+	(bus_alias "UART_USB"
+		(members "UART_USB_RX" "UART_USB_TX" "UART_USB_CTS" "UART_USB_RTS")
+	)
+	(no_connect
+		(at 173.99 120.65)
+		(uuid "0b69f059-5630-4630-ad39-cb914c444526")
+	)
+	(no_connect
+		(at 173.99 115.57)
+		(uuid "265c8baf-2470-4d86-8911-dbdda7aea14c")
+	)
+	(no_connect
+		(at 173.99 118.11)
+		(uuid "bbef57c5-71a3-48da-a5fc-7b324d2a5092")
+	)
+	(no_connect
+		(at 173.99 113.03)
+		(uuid "df6cb696-11fa-4f33-b606-d9a0cd5c5208")
+	)
+	(bus
+		(pts
+			(xy 90.17 85.09) (xy 67.31 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20b93273-ef1c-41dd-9e50-7d15a864af6e")
+	)
+	(wire
+		(pts
+			(xy 114.3 114.3) (xy 137.16 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "326956f5-100f-456e-8f95-ec334705a03f")
+	)
+	(wire
+		(pts
+			(xy 114.3 40.64) (xy 137.16 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "341daf11-1890-47c9-bb72-acdf325b85da")
+	)
+	(wire
+		(pts
+			(xy 114.3 49.53) (xy 137.16 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "689d258f-2dc0-42c8-9297-389f5b419af4")
+	)
+	(wire
+		(pts
+			(xy 67.31 59.69) (xy 90.17 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "738b961f-9a2d-4320-b5a8-490ed6be887c")
+	)
+	(bus
+		(pts
+			(xy 114.3 118.11) (xy 137.16 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9681859b-d13c-47fc-ba5d-10a292e17a29")
+	)
+	(bus
+		(pts
+			(xy 114.3 71.12) (xy 147.32 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a24cedb7-eade-4653-b99a-2f3c64c955df")
+	)
+	(wire
+		(pts
+			(xy 90.17 81.28) (xy 67.31 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b7c9f889-8928-43d6-9045-c04a53b04187")
+	)
+	(wire
+		(pts
+			(xy 114.3 43.18) (xy 137.16 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e667e210-1d14-4ce8-9c5e-5a2c74a53699")
+	)
+	(wire
+		(pts
+			(xy 114.3 46.99) (xy 137.16 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9dfd001-343d-4f58-b23f-092f57334ac0")
+	)
+	(sheet
+		(at 48.26 76.2)
+		(size 19.05 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "05dad072-cd43-486c-b27f-b8e24eeef930")
+		(property "Sheetname" "USB"
+			(at 48.26 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "USB.kicad_sch"
+			(at 48.26 90.1196 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "USB_CONNECTED" output
+			(at 67.31 81.28 0)
+			(uuid "2ac3a8dc-ff49-4705-b05b-3e5bf43ef091")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "{UART_USB}" bidirectional
+			(at 67.31 85.09 0)
+			(uuid "231bfc2c-b65e-4ab1-811b-545869048ade")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 48.26 53.34)
+		(size 19.05 13.97)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "1994b9f0-2116-4f7e-8158-3f911f70fe49")
+		(property "Sheetname" "LED"
+			(at 48.26 52.6284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "LED.kicad_sch"
+			(at 48.26 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "LED_DATA" input
+			(at 67.31 59.69 0)
+			(uuid "14261210-0d5b-4ca5-8f21-7a6079bb4320")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 90.17 36.83)
+		(size 24.13 90.17)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "34875de5-c588-4a4b-9abb-08f90858352d")
+		(property "Sheetname" "MCU"
+			(at 90.17 36.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MCU.kicad_sch"
+			(at 90.17 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "5V_EN" output
+			(at 114.3 43.18 0)
+			(uuid "9aadd071-084b-4d80-b16a-5db2558f9cb6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BUCK_EN" output
+			(at 114.3 40.64 0)
+			(uuid "08be4386-ba9b-495e-a5ac-858f0028a7ea")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USB_CONNECTED" input
+			(at 90.17 81.28 180)
+			(uuid "5a16eac6-491d-4d2a-b733-c99a9f0260e5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "{I2C_PCAL}" bidirectional
+			(at 114.3 118.11 0)
+			(uuid "81d62575-9a13-4be9-a02d-601f1c6b277c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LED_DATA" output
+			(at 90.17 59.69 180)
+			(uuid "fab0dd6b-e5fc-4c36-b14b-13e300159c72")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "{UART_USB}" bidirectional
+			(at 90.17 85.09 180)
+			(uuid "041442c5-abd0-480e-8720-dc8954db9bc6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IOEXP_RESET" output
+			(at 114.3 114.3 0)
+			(uuid "418a0a01-e407-47be-be94-555cdfaa3d49")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Vsensor" output
+			(at 114.3 46.99 0)
+			(uuid "74895071-2747-49b4-8465-4033f8e60708")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Valways" output
+			(at 114.3 49.53 0)
+			(uuid "c685aba4-a25c-4ca4-9ee1-2a4a48e00c4d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "{UART_CN0359}" bidirectional
+			(at 114.3 71.12 0)
+			(uuid "06b7fe69-86d0-4d74-91c0-31910b144990")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 137.16 109.22)
+		(size 36.83 17.78)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5009b541-20c8-4c26-b5a0-c32da2c2b2b6")
+		(property "Sheetname" "Switching circuit"
+			(at 137.16 108.5084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Switch.kicad_sch"
+			(at 137.16 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "IOEXP_RESET" input
+			(at 137.16 114.3 180)
+			(uuid "8721f708-a023-4728-b10a-abeb11812940")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "{I2C_PCAL}" input
+			(at 137.16 118.11 180)
+			(uuid "8e289492-f22f-470e-973d-0a793eb85886")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SENSOR_PIN2" output
+			(at 173.99 115.57 0)
+			(uuid "be8d96b8-02d4-4a53-b49d-3718390fdaed")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSOR_PIN4" output
+			(at 173.99 120.65 0)
+			(uuid "24e41179-50f0-4e46-9ef5-8531332876d3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSOR_PIN1" output
+			(at 173.99 113.03 0)
+			(uuid "ae2e40b8-4b06-42e9-b236-ddf04a410996")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSOR_PIN3" output
+			(at 173.99 118.11 0)
+			(uuid "61d2bcf3-a0eb-4510-b0ab-b5bf290928ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 28.575 137.795)
+		(size 19.685 14.605)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "6f2e4a7a-a449-4181-be0f-e79b9bb09f77")
+		(property "Sheetname" "Mechanical"
+			(at 28.575 137.0834 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Mechanical.kicad_sch"
+			(at 28.575 152.9846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "41")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 137.16 36.83)
+		(size 36.83 19.05)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a008c0ab-bb36-41a2-8835-1e8ca826fc8c")
+		(property "Sheetname" "Power"
+			(at 137.16 36.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Power.kicad_sch"
+			(at 137.16 57.0996 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "BUCK_EN" input
+			(at 137.16 40.64 180)
+			(uuid "43d422bb-19e7-4867-954e-ed00915ce9d0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "5V_EN" input
+			(at 137.16 43.18 180)
+			(uuid "bada33d5-ddec-4534-bb58-b72ffca7792f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "Vsensor" input
+			(at 137.16 46.99 180)
+			(uuid "70f70111-f6b1-4ed0-bb95-b8e53417d6dd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "Valways" input
+			(at 137.16 49.53 180)
+			(uuid "0354925a-41eb-4df1-be5d-0463d19f5ccd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 147.32 66.04)
+		(size 26.035 19.05)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "e6b95054-1f9a-4113-b1b3-5e749075d2c9")
+		(property "Sheetname" "RS485"
+			(at 147.32 65.3284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "RS485.kicad_sch"
+			(at 147.32 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "{UART_CN0359}" bidirectional
+			(at 147.32 71.12 180)
+			(uuid "7417e4c2-8b05-43db-a1c8-762bfe661185")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "Zoutwachter-measurement"
+				(path "/51927748-cbf3-4f36-990c-40014f3393ae"
+					(page "36")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
